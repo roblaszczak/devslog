@@ -4,7 +4,7 @@ test:
 	@go test -race ./...
 
 retest:
-	@rerun -watch . ../devslog -run sh -c 'make test-tparse'
+	@rerun -watch . ../humanslog -run sh -c 'make test-tparse'
 
 test-coverage:
 	@go test -race -cover -coverprofile=coverage.txt ./... -json

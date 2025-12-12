@@ -1,4 +1,4 @@
-package devslog
+package humanslog
 
 import (
 	"log/slog"

@@ -4,4 +4,4 @@ run:
 	rerun -watch . .. -run sh -c 'go run .'
 
 update: 
-	go get github.com/golang-cz/devslog@latest
+	go get github.com/golang-cz/humanslog@latest

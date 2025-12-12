@@ -1,4 +1,4 @@
-package devslog
+package humanslog
 
 import (
 	"bytes"
@@ -46,16 +46,16 @@ type Options struct {
 	// Indent \n in strings
 	StringIndentation bool
 
-	// Set color for Debug level, default: devslog.Blue
+	// Set color for Debug level, default: humanslog.Blue
 	DebugColor Color
 
-	// Set color for Info level, default: devslog.Green
+	// Set color for Info level, default: humanslog.Green
 	InfoColor Color
 
-	// Set color for Warn level, default: devslog.Yellow
+	// Set color for Warn level, default: humanslog.Yellow
 	WarnColor Color
 
-	// Set color for Error level, default: devslog.Red
+	// Set color for Error level, default: humanslog.Red
 	ErrorColor Color
 
 	// Max stack trace frames when unwrapping errors

@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/roblaszczak/devslog"
+	"github.com/roblaszczak/humanslog"
 )
 
 func main() {
@@ -32,15 +32,15 @@ func main() {
 			logger = slog.New(slog.NewTextHandler(w, slogOpts))
 		}
 	} else {
-		opts := &devslog.Options{
+		opts := &humanslog.Options{
 			HandlerOptions:    slogOpts,
 			MaxSlicePrintSize: 5,
 			SortKeys:          true,
-			DebugColor:        devslog.Magenta,
+			DebugColor:        humanslog.Magenta,
 			StringIndentation: true,
 		}
 
-		logger = slog.New(devslog.NewHandler(w, opts))
+		logger = slog.New(humanslog.NewHandler(w, opts))
 	}
 
 	slog.SetDefault(logger)
@@ -392,14 +392,14 @@ func printNoColor(log bool) {
 		return
 	}
 
-	opts := &devslog.Options{
+	opts := &humanslog.Options{
 		HandlerOptions: &slog.HandlerOptions{
 			AddSource: true,
 		},
 		NoColor: true,
 	}
 
-	l := slog.New(devslog.NewHandler(os.Stdout, opts))
+	l := slog.New(humanslog.NewHandler(os.Stdout, opts))
 	l.Info("msg",
 		slog.String("string", "str"),
 		slog.Any("map", map[int]string{3: "three", 4: "four"}),

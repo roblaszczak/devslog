@@ -1,4 +1,4 @@
-package devslog
+package humanslog
 
 import (
 	"bytes"
@@ -1391,8 +1391,8 @@ func testOneLineWithStructInline(t *testing.T) {
 	result := stripAnsi(string(w.WrittenData))
 
 	// Should have struct type and all field names (package-qualified)
-	if !strings.Contains(result, "devslog.Person{") {
-		t.Errorf("Expected struct type 'devslog.Person{', got: %s", result)
+	if !strings.Contains(result, "humanslog.Person{") {
+		t.Errorf("Expected struct type 'humanslog.Person{', got: %s", result)
 	}
 	if !strings.Contains(result, "Name=John") {
 		t.Errorf("Expected field 'Name=John', got: %s", result)
