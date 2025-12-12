@@ -222,6 +222,40 @@ func (h *developHandler) attrContainsNewline(a slog.Attr) bool {
 	return false
 }
 
+// attrContainsStruct checks if an attribute contains a struct
+// Structs should be moved to multiline section for proper formatting
+func (h *developHandler) attrContainsStruct(a slog.Attr) bool {
+	switch a.Value.Kind() {
+	case slog.KindGroup:
+		// Recursively check group members
+		for _, ga := range a.Value.Group() {
+			if h.attrContainsStruct(ga) {
+				return true
+			}
+		}
+	case slog.KindAny:
+		av := a.Value.Any()
+		if av == nil {
+			return false
+		}
+
+		// Use reflection to check if it's a struct
+		avt := reflect.TypeOf(av)
+		if avt == nil {
+			return false
+		}
+
+		// Reduce pointer types to get underlying type
+		for avt.Kind() == reflect.Pointer {
+			avt = avt.Elem()
+		}
+
+		// Check if underlying type is struct
+		return avt.Kind() == reflect.Struct
+	}
+	return false
+}
+
 // formatOneLine formats the log record in a hybrid format:
 // - One line with all inline fields (no newlines)
 // - Multiline fields appended at the end in readable format
@@ -323,7 +357,7 @@ func (h *developHandler) formatOneLine(b []byte, r *slog.Record) []byte {
 	// Separate inline and multiline attributes
 	var inlineAttrs, multilineAttrs attributes
 	for _, a := range as {
-		if h.attrContainsNewline(a) || h.isJSON(a.Value.String()) {
+		if h.attrContainsNewline(a) || h.isJSON(a.Value.String()) || h.attrContainsStruct(a) {
 			multilineAttrs = append(multilineAttrs, a)
 		} else {
 			inlineAttrs = append(inlineAttrs, a)
@@ -575,7 +609,7 @@ func (h *developHandler) colorize(b []byte, as attributes, l int, group []string
 				val = h.formatMap(avt, avv, vi)
 			case reflect.Struct:
 				mark = h.colorString([]byte("S"), fgYellow)
-				val = h.formatStruct(avt, avv, vi)
+				val = h.formatStruct(avt, avv, l, vi)
 			case reflect.Float32, reflect.Float64:
 				mark = h.colorString([]byte("#"), fgCyan)
 				vs = atb(uv.Float())
@@ -732,7 +766,7 @@ func (h *developHandler) formatSlice(st reflect.Type, sv reflect.Value, vi visit
 			b = append(b, ' ')
 		}
 		v := sv.Index(i)
-		b = append(b, h.elementType(v.Type(), v, vi)...)
+		b = append(b, h.elementType(v.Type(), v, 0, 0, vi)...)
 	}
 	if sv.Len() > maxItems {
 		b = append(b, ' ')
@@ -762,41 +796,64 @@ func (h *developHandler) formatMap(st reflect.Type, sv reflect.Value, vi visited
 
 		b = append(b, h.colorString(atb(k.Interface()), fgGreen)...)
 		b = append(b, '=')
-		b = append(b, h.elementType(v.Type(), v, vi)...)
+		b = append(b, h.elementType(v.Type(), v, 0, 0, vi)...)
 	}
 	b = append(b, h.colorString([]byte("}"), fgGreen)...)
 	return b
 }
 
-func (h *developHandler) formatStruct(st reflect.Type, sv reflect.Value, vi visited) []byte {
+func (h *developHandler) structKeyPadding(sv reflect.Value, fgColor *foregroundColor) int {
+	st := sv.Type()
+	p := 0
+	for i := 0; i < sv.NumField(); i++ {
+		if !st.Field(i).IsExported() {
+			continue
+		}
+
+		c := len(st.Field(i).Name)
+		if fgColor != nil {
+			c = len(h.colorString([]byte(st.Field(i).Name), *fgColor))
+		}
+
+		if c > p {
+			p = c
+		}
+	}
+
+	return p
+}
+
+func (h *developHandler) formatStruct(st reflect.Type, sv reflect.Value, l int, vi visited) []byte {
 	b := h.buildTypeString(st.String())
 	_, sv, _ = h.reducePointerTypeValue(st, sv)
 
-	b = append(b, h.colorString([]byte("{"), fgYellow)...)
-	first := true
+	pc := h.structKeyPadding(sv, &fgGreen)
+	pr := h.structKeyPadding(sv, nil)
+
 	for i := 0; i < sv.NumField(); i++ {
 		if !sv.Type().Field(i).IsExported() {
 			continue
 		}
-		if !first {
-			b = append(b, ' ')
-		}
-		first = false
 
 		v := sv.Field(i)
 		t := v.Type()
 
-		b = append(b, h.colorString([]byte(sv.Type().Field(i).Name), fgGreen)...)
-		b = append(b, '=')
-		b = append(b, h.elementType(t, v, vi)...)
+		tb := h.colorString([]byte(sv.Type().Field(i).Name), fgGreen)
+		b = append(b, '\n')
+		b = append(b, bytes.Repeat([]byte(" "), l*2+4)...)
+		b = append(b, tb...)
+		b = append(b, bytes.Repeat([]byte(" "), pc-len(tb))...)
+		b = append(b, ':')
+		b = append(b, ' ')
+		b = append(b, h.elementType(t, v, l, l*2+pr+2, vi)...)
 	}
-	b = append(b, h.colorString([]byte("}"), fgYellow)...)
+
 	return b
 }
 
 var marshalTextInterface = reflect.TypeOf((*encoding.TextMarshaler)(nil)).Elem()
 
-func (h *developHandler) elementType(t reflect.Type, v reflect.Value, vi visited) []byte {
+func (h *developHandler) elementType(t reflect.Type, v reflect.Value, l int, p int, vi visited) []byte {
 	if t.Implements(marshalTextInterface) {
 		return atb(v)
 	}
@@ -813,7 +870,7 @@ func (h *developHandler) elementType(t reflect.Type, v reflect.Value, vi visited
 	case reflect.Map:
 		return h.formatMap(t, v, vi)
 	case reflect.Struct:
-		return h.formatStruct(t, v, vi)
+		return h.formatStruct(t, v, l+1, vi)
 	case reflect.Pointer:
 		key := visitKey{
 			ptr: v.Pointer(),
@@ -825,7 +882,7 @@ func (h *developHandler) elementType(t reflect.Type, v reflect.Value, vi visited
 			return atb(v)
 		} else {
 			vi[key] = struct{}{}
-			return h.elementType(t, v.Elem(), vi)
+			return h.elementType(t, v.Elem(), l, p, vi)
 		}
 	case reflect.Float32, reflect.Float64:
 		return h.colorString(atb(v.Float()), fgCyan)
@@ -851,7 +908,7 @@ func (h *developHandler) elementType(t reflect.Type, v reflect.Value, vi visited
 			return h.nilString()
 		}
 		v = reflect.ValueOf(v.Interface())
-		return h.elementType(v.Type(), v, vi)
+		return h.elementType(v.Type(), v, l, p, vi)
 	default:
 		return atb(v)
 	}
@@ -939,7 +996,9 @@ func (h *developHandler) formatValueInline(a slog.Attr) []byte {
 			val := h.formatMap(avt, avv, vi)
 			return h.formatLogfmtValue(append(prefix, val...), nil)
 		case reflect.Struct:
-			val := h.formatStruct(avt, avv, vi)
+			// Note: structs should be moved to multiline section by attrContainsStruct()
+			// This path is for struct elements inside inline slices/maps
+			val := h.formatStruct(avt, avv, 0, vi)
 			return h.formatLogfmtValue(append(prefix, val...), nil)
 		case reflect.Float32, reflect.Float64:
 			val := atb(uv.Float())

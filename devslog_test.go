@@ -757,7 +757,7 @@ func testStruct(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90ms=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mT\x1b[0m\x1b[33me\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33m{\x1b[0m\x1b[32mSlice\x1b[0m=\x1b[36m0\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mMap\x1b[0m=\x1b[36m0\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mStruct\x1b[0m=\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\x1b[33m{\x1b[0m\x1b[32mB\x1b[0m=\x1b[31mfalse\x1b[0m\x1b[33m}\x1b[0m \x1b[32mSliceP\x1b[0m=\x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mMapP\x1b[0m=\x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mStructP\x1b[0m=\x1b[31m*\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\x1b[33m{\x1b[0m\x1b[32mB\x1b[0m=\x1b[31mfalse\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg\x1b[33mS\x1b[0m \x1b[90ms\x1b[0m=\x1b[31m*\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mT\x1b[0m\x1b[33me\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\n    \x1b[32mSlice\x1b[0m  : \x1b[36m0\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m\n    \x1b[32mMap\x1b[0m    : \x1b[36m0\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m\n    \x1b[32mStruct\x1b[0m : \x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\n      \x1b[32mB\x1b[0m: \x1b[31mfalse\x1b[0m\n    \x1b[32mSliceP\x1b[0m : \x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m\n    \x1b[32mMapP\x1b[0m   : \x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m\n    \x1b[32mStructP\x1b[0m: \x1b[31m*\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\n      \x1b[32mB\x1b[0m: \x1b[31mfalse\x1b[0m\n\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -780,7 +780,7 @@ func testNilInterface(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90ms=\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mW\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33mh\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mData\x1b[0m=\x1b[33m<nil>\x1b[0m\x1b[33m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg\x1b[33mS\x1b[0m \x1b[90ms\x1b[0m=\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mW\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33mh\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\n    \x1b[32mData\x1b[0m: \x1b[33m<nil>\x1b[0m\n\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -1391,24 +1391,25 @@ func testOneLineWithStructInline(t *testing.T) {
 	result := stripAnsi(string(w.WrittenData))
 
 	// Should have struct type and all field names (package-qualified)
-	if !strings.Contains(result, "humanslog.Person{") {
-		t.Errorf("Expected struct type 'humanslog.Person{', got: %s", result)
+	// Structs are now multiline with : separator instead of inline with = separator
+	if !strings.Contains(result, "humanslog.Person") {
+		t.Errorf("Expected struct type 'humanslog.Person', got: %s", result)
 	}
-	if !strings.Contains(result, "Name=John") {
-		t.Errorf("Expected field 'Name=John', got: %s", result)
+	if !strings.Contains(result, "Name") || !strings.Contains(result, "John") {
+		t.Errorf("Expected field 'Name' with value 'John', got: %s", result)
 	}
-	if !strings.Contains(result, "Age=30") {
-		t.Errorf("Expected field 'Age=30', got: %s", result)
+	if !strings.Contains(result, "Age") || !strings.Contains(result, "30") {
+		t.Errorf("Expected field 'Age' with value '30', got: %s", result)
 	}
-	if !strings.Contains(result, "Address=") {
-		t.Errorf("Expected nested struct 'Address=', got: %s", result)
+	if !strings.Contains(result, "Address") {
+		t.Errorf("Expected nested struct 'Address', got: %s", result)
 	}
-	if !strings.Contains(result, "City=NYC") {
-		t.Errorf("Expected nested field 'City=NYC', got: %s", result)
+	if !strings.Contains(result, "City") || !strings.Contains(result, "NYC") {
+		t.Errorf("Expected nested field 'City' with value 'NYC', got: %s", result)
 	}
-	// Should be on one line (INFO badge format)
+	// Should have INFO badge
 	if !strings.Contains(result, "INFO") {
-		t.Errorf("Expected one-line format, got: %s", result)
+		t.Errorf("Expected INFO badge, got: %s", result)
 	}
 }
 

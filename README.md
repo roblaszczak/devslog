@@ -6,8 +6,8 @@
 
 `humanslog` is a zero dependency structured logging handler for Go's [`log/slog`](https://pkg.go.dev/log/slog) package with pretty and colorful output for developers.
 
-This is an updated version of [github.com/golang-cz/devslog](https://github.com/golang-cz/devslog) that keeps the colorful formatting and structure but writes most of the log output in a **single line** for better readability. Multiline strings are preserved for readability, and JSON values are automatically formatted inline with syntax highlighting.
-I also adjusted color choices to be more suitable for single-line output and closer to my personal taste.
+This is an updated version of [github.com/golang-cz/devslog](https://github.com/golang-cz/devslog) that keeps the colorful formatting and structure but writes most of the log output in a **single line** for better readability. **Structs are formatted with proper indentation and alignment across multiple lines** for clarity and readability. Multiline strings and JSON values are automatically formatted for optimal readability.
+I also adjusted color choices to be more suitable for the output format and closer to my personal taste.
 
 ## Example output
 
@@ -15,13 +15,14 @@ I also adjusted color choices to be more suitable for single-line output and clo
 
 ## Features
 
-- Single-line log format
+- Single-line log format for most attributes
+- **Multiline struct formatting** with indentation and field alignment
 - Support for multiline strings
 - Inline JSON formatting with syntax highlighting
 - Colorful output with customizable colors
 - Zero dependencies
 - Stack trace support for errors
-- Logfmt-like output
+- Logfmt-like output for inline attributes
 
 ## Install
 
