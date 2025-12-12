@@ -1,8 +1,8 @@
 # 🤗 humanslog - Go [slog.Handler](https://pkg.go.dev/log/slog#Handler) for humans
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/roblaszczak/humanslog/blob/master/LICENSE)
-[![Go Report Card](https://goreportcard.com/badge/github.com/roblaszczak/humanslog)](https://goreportcard.com/report/github.com/roblaszczak/humanslog)
-[![Go Reference](https://pkg.go.dev/badge/github.com/roblaszczak/humanslog.svg)](https://pkg.go.dev/github.com/roblaszczak/humanslog)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ThreeDotsLabs/humanslog/blob/master/LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ThreeDotsLabs/humanslog)](https://goreportcard.com/report/github.com/ThreeDotsLabs/humanslog)
+[![Go Reference](https://pkg.go.dev/badge/github.com/ThreeDotsLabs/humanslog.svg)](https://pkg.go.dev/github.com/ThreeDotsLabs/humanslog)
 
 `humanslog` is a zero dependency structured logging handler for Go's [`log/slog`](https://pkg.go.dev/log/slog) package with pretty and colorful output for developers.
 
@@ -26,7 +26,7 @@ I also adjusted color choices to be more suitable for single-line output and clo
 ## Install
 
 ```
-go get github.com/roblaszczak/humanslog@latest
+go get github.com/ThreeDotsLabs/humanslog@latest
 ```
 
 ## Examples
