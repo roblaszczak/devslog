@@ -316,7 +316,7 @@ func testSource(t *testing.T) {
 	_, filename, l, _ := runtime.Caller(0)
 	logger.Info("message")
 
-	expected := fmt.Sprintf("\x1b[2m[]\x1b[0m \x1b[37m%s:%d\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmessage\x1b[0m\n\n", filename, l+1)
+	expected := fmt.Sprintf("\x1b[2m[]\x1b[0m \x1b[37m%s:%d\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m message\n\n", filename, l+1)
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -345,7 +345,7 @@ func testWithGroups(t *testing.T) {
 		slog.Any("a", "1"),
 	)
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mMy INFO message\x1b[0m \x1b[90mtest_group.a=\x1b[0m1\n\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m My INFO message \x1b[90mtest_group.a=\x1b[0m1\n\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -372,7 +372,7 @@ func testWithGroupsEmpty(t *testing.T) {
 
 	logger.Info("My INFO message")
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mMy INFO message\x1b[0m\n\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m My INFO message\n\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -400,7 +400,7 @@ func testWithAttributes(t *testing.T) {
 
 	logger.Info("My INFO message")
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mMy INFO message\x1b[0m \x1b[90ma=\x1b[0m1\n\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m My INFO message \x1b[90ma=\x1b[0m1\n\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -474,7 +474,7 @@ func testReplaceLevelAttributes(t *testing.T) {
 	logger.Debug("starting background job")
 	logger.Log(ctx, LevelTrace, "button clicked")
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[41m\x1b[30m EMERGENCY \x1b[0m \x1b[31mmissing pilots\x1b[0m \x1b[90msev=\x1b[0mEMERGENCY\n\n\x1b[2m[]\x1b[0m \x1b[41m\x1b[30m ERROR \x1b[0m \x1b[31mfailed to start engines\x1b[0m \x1b[90merr=\x1b[0mmissing fuel \x1b[90msev=\x1b[0mERROR\n\n\x1b[2m[]\x1b[0m \x1b[43m\x1b[30m WARNING \x1b[0m \x1b[33mfalling back to default value\x1b[0m \x1b[90msev=\x1b[0mWARNING\n\n\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m NOTICE \x1b[0m \x1b[32mall systems are running\x1b[0m \x1b[90msev=\x1b[0mNOTICE\n\n\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32minitiating launch\x1b[0m \x1b[90msev=\x1b[0mINFO\n\n\x1b[2m[]\x1b[0m \x1b[44m\x1b[30m DEBUG \x1b[0m \x1b[34mstarting background job\x1b[0m \x1b[90msev=\x1b[0mDEBUG\n\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[41m\x1b[30m EMERGENCY \x1b[0m missing pilots \x1b[90msev=\x1b[0mEMERGENCY\n\n\x1b[2m[]\x1b[0m \x1b[41m\x1b[30m ERROR \x1b[0m failed to start engines \x1b[90merr=\x1b[0mmissing fuel \x1b[90msev=\x1b[0mERROR\n\n\x1b[2m[]\x1b[0m \x1b[43m\x1b[30m WARNING \x1b[0m falling back to default value \x1b[90msev=\x1b[0mWARNING\n\n\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m NOTICE \x1b[0m all systems are running \x1b[90msev=\x1b[0mNOTICE\n\n\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m initiating launch \x1b[90msev=\x1b[0mINFO\n\n\x1b[2m[]\x1b[0m \x1b[44m\x1b[30m DEBUG \x1b[0m starting background job \x1b[90msev=\x1b[0mDEBUG\n\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -528,7 +528,7 @@ func testString(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mempty=\x1b[0m \x1b[90ms=\x1b[0mstring \x1b[90msp=\x1b[0m\x1b[31m*\x1b[0mstring \x1b[90murl=\x1b[0m\x1b[36mhttps://go.dev/\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mempty=\x1b[0m \x1b[90ms=\x1b[0mstring \x1b[90msp=\x1b[0m\x1b[31m*\x1b[0mstring \x1b[90murl=\x1b[0m\x1b[36mhttps://go.dev/\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -552,7 +552,7 @@ func testIntFloat(t *testing.T, o *Options) {
 	)
 
 	expected := fmt.Sprintf(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mf=\x1b[0m\x1b[36m1.21\x1b[0m \x1b[90mfp=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m1.21\x1b[0m \x1b[90mi=\x1b[0m\x1b[36m1\x1b[0m \x1b[90mip=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m1\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mf=\x1b[0m\x1b[36m1.21\x1b[0m \x1b[90mfp=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m1.21\x1b[0m \x1b[90mi=\x1b[0m\x1b[36m1\x1b[0m \x1b[90mip=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m1\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
@@ -571,7 +571,7 @@ func testBool(t *testing.T, o *Options) {
 		slog.Any("bp", bp),
 	)
 
-	expected := fmt.Sprintf("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mb=\x1b[0m\x1b[32mtrue\x1b[0m \x1b[90mbp=\x1b[0m\x1b[31m*\x1b[0m\x1b[32mtrue\x1b[0m\n\n")
+	expected := fmt.Sprintf("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mb=\x1b[0m\x1b[32mtrue\x1b[0m \x1b[90mbp=\x1b[0m\x1b[31m*\x1b[0m\x1b[32mtrue\x1b[0m\n\n")
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -594,7 +594,7 @@ func testTime(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90md=\x1b[0m\x1b[37m99780h0m0s\x1b[0m \x1b[90mt=\x1b[0m\x1b[37m2012-03-28 00:00:00 +0000 UTC\x1b[0m \x1b[90mtp=\x1b[0m\x1b[37m2012-03-28 00:00:00 +0000 UTC\x1b[0m \x1b[90mtp=\x1b[0m\x1b[37m99780h0m0s\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90md=\x1b[0m\x1b[37m99780h0m0s\x1b[0m \x1b[90mt=\x1b[0m\x1b[37m2012-03-28 00:00:00 +0000 UTC\x1b[0m \x1b[90mtp=\x1b[0m\x1b[37m2012-03-28 00:00:00 +0000 UTC\x1b[0m \x1b[90mtp=\x1b[0m\x1b[37m99780h0m0s\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -615,7 +615,7 @@ func testError(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90me=\x1b[0m\x1b[31merr 2: err 1: broken\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90me=\x1b[0m\x1b[31merr 2: err 1: broken\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -634,7 +634,7 @@ func testSlice(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90ms=\x1b[0m\x1b[36m2\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0mapple ba na na\x1b[32m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90ms=\x1b[0m\x1b[36m2\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0mapple ba na na\x1b[32m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -656,7 +656,7 @@ func testSliceBig(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90ms=\x1b[0m\x1b[36m11\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[36m0\x1b[0m \x1b[36m2\x1b[0m \x1b[36m4\x1b[0m \x1b[36m6\x1b[0m \x1b[36m...\x1b[0m\x1b[32m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90ms=\x1b[0m\x1b[36m11\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[36m0\x1b[0m \x1b[36m2\x1b[0m \x1b[36m4\x1b[0m \x1b[36m6\x1b[0m \x1b[36m...\x1b[0m\x1b[32m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -678,7 +678,7 @@ func testMap(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mm=\x1b[0m\x1b[36m2\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmp=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmpp=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mm=\x1b[0m\x1b[36m2\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmp=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmpp=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -698,7 +698,7 @@ func testMapOfPointers(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mm=\x1b[0m\x1b[36m2\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[31m*\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=a\x1b[32m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mm=\x1b[0m\x1b[36m2\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[31m*\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=a\x1b[32m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -720,7 +720,7 @@ func testMapOfInterface(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mm=\x1b[0m\x1b[36m2\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m}\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmp=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m}\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmpp=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m}\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mm=\x1b[0m\x1b[36m2\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m}\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmp=\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m}\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m \x1b[90mmpp=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[36m2\x1b[0m \x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m}\x1b[0m\x1b[32m{\x1b[0m\x1b[32m0\x1b[0m=a \x1b[32m1\x1b[0m=b\x1b[32m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -757,7 +757,7 @@ func testStruct(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90ms=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mT\x1b[0m\x1b[33me\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33m{\x1b[0m\x1b[32mSlice\x1b[0m=\x1b[36m0\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mMap\x1b[0m=\x1b[36m0\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mStruct\x1b[0m=\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\x1b[33m{\x1b[0m\x1b[32mB\x1b[0m=\x1b[31mfalse\x1b[0m\x1b[33m}\x1b[0m \x1b[32mSliceP\x1b[0m=\x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mMapP\x1b[0m=\x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mStructP\x1b[0m=\x1b[31m*\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\x1b[33m{\x1b[0m\x1b[32mB\x1b[0m=\x1b[31mfalse\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90ms=\x1b[0m\x1b[31m*\x1b[0m\x1b[31m*\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mT\x1b[0m\x1b[33me\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33m{\x1b[0m\x1b[32mSlice\x1b[0m=\x1b[36m0\x1b[0m \x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mMap\x1b[0m=\x1b[36m0\x1b[0m \x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mStruct\x1b[0m=\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\x1b[33m{\x1b[0m\x1b[32mB\x1b[0m=\x1b[31mfalse\x1b[0m\x1b[33m}\x1b[0m \x1b[32mSliceP\x1b[0m=\x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[32m[\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mMapP\x1b[0m=\x1b[36m0\x1b[0m \x1b[31m*\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mp\x1b[0m\x1b[32m[\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m]\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[32m{\x1b[0m\x1b[32m}\x1b[0m \x1b[32mStructP\x1b[0m=\x1b[31m*\x1b[0m\x1b[33ms\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33m \x1b[0m\x1b[33m{\x1b[0m\x1b[33m \x1b[0m\x1b[33mB\x1b[0m\x1b[33m \x1b[0m\x1b[33mb\x1b[0m\x1b[33mo\x1b[0m\x1b[33mo\x1b[0m\x1b[33ml\x1b[0m\x1b[33m \x1b[0m\x1b[33m}\x1b[0m\x1b[33m{\x1b[0m\x1b[32mB\x1b[0m=\x1b[31mfalse\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -780,7 +780,7 @@ func testNilInterface(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90ms=\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mW\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33mh\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mData\x1b[0m=\x1b[33m<nil>\x1b[0m\x1b[33m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90ms=\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mu\x1b[0m\x1b[33mc\x1b[0m\x1b[33mt\x1b[0m\x1b[33mW\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33mh\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mf\x1b[0m\x1b[33ma\x1b[0m\x1b[33mc\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mData\x1b[0m=\x1b[33m<nil>\x1b[0m\x1b[33m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -799,7 +799,7 @@ func testGroup(t *testing.T, o *Options) {
 		),
 	)
 
-	expected := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90m1=\x1b[0ma \x1b[90mg.2=\x1b[0mb\n\n")
+	expected := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90m1=\x1b[0ma \x1b[90mg.2=\x1b[0mb\n\n")
 
 	if !bytes.Equal(w.WrittenData, expected) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -829,7 +829,7 @@ func testLogValuer(t *testing.T, o *Options) {
 		slog.Any("item1", item1),
 	)
 
-	expected := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest_log_valuer\x1b[0m \x1b[90mitem1.A=\x1b[0m\x1b[36m5\x1b[0m \x1b[90mitem1.B=\x1b[0mtest\n\n")
+	expected := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test_log_valuer \x1b[90mitem1.A=\x1b[0m\x1b[36m5\x1b[0m \x1b[90mitem1.B=\x1b[0mtest\n\n")
 
 	if !bytes.Equal(w.WrittenData, expected) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -856,7 +856,7 @@ func testLogValuerPanic(t *testing.T, o *Options) {
 		slog.Any("item1", item1),
 	)
 
-	expectedPrefix := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest_log_valuer_panic\x1b[0m \x1b[90mitem1=\x1b[0m\x1b[31mLogValue panicked\n")
+	expectedPrefix := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test_log_valuer_panic \x1b[90mitem1=\x1b[0m\x1b[31mLogValue panicked\n")
 	if !bytes.HasPrefix(w.WrittenData, expectedPrefix) {
 		t.Errorf("\nGot:\n%s\n , %[1]q expected it to contain panic stack trace", w.WrittenData)
 	}
@@ -880,7 +880,7 @@ func testStringer(t *testing.T, o *Options) {
 		slog.Any("item1", item1),
 	)
 
-	expected := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest_stringer\x1b[0m \x1b[90mitem1=\x1b[0mA: test\n\n")
+	expected := []byte("\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test_stringer \x1b[90mitem1=\x1b[0mA: test\n\n")
 
 	if !bytes.Equal(w.WrittenData, expected) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -906,7 +906,7 @@ func testStringerInner(t *testing.T, o *Options) {
 	)
 
 	expected := []byte(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest_stringer_inner\x1b[0m \x1b[90mitem1=\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mE\x1b[0m\x1b[33mx\x1b[0m\x1b[33ma\x1b[0m\x1b[33mm\x1b[0m\x1b[33mp\x1b[0m\x1b[33ml\x1b[0m\x1b[33me\x1b[0m\x1b[33m2\x1b[0m\x1b[33m{\x1b[0m\x1b[32mInner\x1b[0m=A: test \x1b[32mOther\x1b[0m=\x1b[36m42\x1b[0m\x1b[33m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test_stringer_inner \x1b[90mitem1=\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33mS\x1b[0m\x1b[33mt\x1b[0m\x1b[33mr\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mg\x1b[0m\x1b[33me\x1b[0m\x1b[33mr\x1b[0m\x1b[33mE\x1b[0m\x1b[33mx\x1b[0m\x1b[33ma\x1b[0m\x1b[33mm\x1b[0m\x1b[33mp\x1b[0m\x1b[33ml\x1b[0m\x1b[33me\x1b[0m\x1b[33m2\x1b[0m\x1b[33m{\x1b[0m\x1b[32mInner\x1b[0m=A: test \x1b[32mOther\x1b[0m=\x1b[36m42\x1b[0m\x1b[33m}\x1b[0m\n\n",
 	)
 
 	if !bytes.Equal(w.WrittenData, expected) {
@@ -955,7 +955,7 @@ func testInfinite(t *testing.T, o *Options) {
 	)
 
 	expected := fmt.Sprintf(
-		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mi=\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=\x1b[31m*\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=\x1b[31m*\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=\x1b[31m*\x1b[0m\x1b[33md\x1b[0m\x1b[33me\x1b[0m\x1b[33mv\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=&{%p}\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\n\n",
+		"\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mi=\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=\x1b[31m*\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=\x1b[31m*\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=\x1b[31m*\x1b[0m\x1b[33mh\x1b[0m\x1b[33mu\x1b[0m\x1b[33mm\x1b[0m\x1b[33ma\x1b[0m\x1b[33mn\x1b[0m\x1b[33ms\x1b[0m\x1b[33ml\x1b[0m\x1b[33mo\x1b[0m\x1b[33mg\x1b[0m\x1b[33m.\x1b[0m\x1b[33mI\x1b[0m\x1b[33mn\x1b[0m\x1b[33mf\x1b[0m\x1b[33mi\x1b[0m\x1b[33mn\x1b[0m\x1b[33mi\x1b[0m\x1b[33mt\x1b[0m\x1b[33me\x1b[0m\x1b[33m{\x1b[0m\x1b[32mI\x1b[0m=&{%p}\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\x1b[33m}\x1b[0m\n\n",
 		v2.I,
 	)
 
@@ -988,7 +988,7 @@ func testSameSourceInfoColor(t *testing.T) {
 	line++
 
 	expected := fmt.Sprintf(
-		"\x1b[2m[]\x1b[0m \x1b[37m%s:%d\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mmsg\x1b[0m \x1b[90mi=\x1b[0m\x1b[36m1\x1b[0m\n", file, line,
+		"\x1b[2m[]\x1b[0m \x1b[37m%s:%d\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m msg \x1b[90mi=\x1b[0m\x1b[36m1\x1b[0m\n", file, line,
 	)
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
@@ -1034,7 +1034,7 @@ func testOneLineBasic(t *testing.T) {
 
 	logger.Info("test message")
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest message\x1b[0m\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test message\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1063,7 +1063,7 @@ func testOneLineWithAttributes(t *testing.T) {
 		slog.Bool("active", true),
 	)
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest message\x1b[0m \x1b[90mfoo=\x1b[0mbar \x1b[90mcount=\x1b[0m\x1b[36m42\x1b[0m \x1b[90mactive=\x1b[0m\x1b[32mtrue\x1b[0m\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test message \x1b[90mfoo=\x1b[0mbar \x1b[90mcount=\x1b[0m\x1b[36m42\x1b[0m \x1b[90mactive=\x1b[0m\x1b[32mtrue\x1b[0m\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1091,7 +1091,7 @@ func testOneLineWithQuoting(t *testing.T) {
 		slog.String("equals", "key=value"),
 	)
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest message\x1b[0m \x1b[90mtext=\x1b[0mvalue with spaces \x1b[90mequals=\x1b[0mkey=value\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test message \x1b[90mtext=\x1b[0mvalue with spaces \x1b[90mequals=\x1b[0mkey=value\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1119,7 +1119,7 @@ func testOneLineWithGroups(t *testing.T) {
 		slog.Int("status", 200),
 	)
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest message\x1b[0m \x1b[90mrequest.method=\x1b[0mGET \x1b[90mrequest.status=\x1b[0m\x1b[36m200\x1b[0m\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test message \x1b[90mrequest.method=\x1b[0mGET \x1b[90mrequest.status=\x1b[0m\x1b[36m200\x1b[0m\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1146,7 +1146,7 @@ func testOneLineFallbackMessageNewline(t *testing.T) {
 	logger.Info("test\nmessage", slog.String("foo", "bar"))
 
 	// Message with newlines is shown inline with spacing
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m  \x1b[90mfoo=\x1b[0mbar  \x1b[32mtest\nmessage\x1b[0m\n\n\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m  \x1b[90mfoo=\x1b[0mbar  test\nmessage\n\n\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1173,7 +1173,7 @@ func testOneLineFallbackAttributeNewline(t *testing.T) {
 	logger.Info("test message", slog.String("foo", "bar\nbaz"))
 
 	// Attribute with newlines is shown inline with spacing
-	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest message\x1b[0m \x1b[90mfoo\x1b[0m=bar\nbaz\n\n\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test message \x1b[90mfoo\x1b[0m=bar\nbaz\n\n\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1201,7 +1201,7 @@ func testOneLineWithColors(t *testing.T) {
 		slog.Duration("duration", 5*time.Second),
 	)
 
-	expected := "\x1b[2m[]\x1b[0m \x1b[43m\x1b[30m WARN \x1b[0m \x1b[33mtest message\x1b[0m \x1b[90mcount=\x1b[0m\x1b[36m42\x1b[0m \x1b[90mduration=\x1b[0m\x1b[37m5s\x1b[0m\n"
+	expected := "\x1b[2m[]\x1b[0m \x1b[43m\x1b[30m WARN \x1b[0m test message \x1b[90mcount=\x1b[0m\x1b[36m42\x1b[0m \x1b[90mduration=\x1b[0m\x1b[37m5s\x1b[0m\n"
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)
@@ -1257,7 +1257,7 @@ func testOneLineWithSource(t *testing.T) {
 	logger.Info("test message", slog.String("foo", "bar"))
 	line++
 
-	expected := fmt.Sprintf("\x1b[2m[]\x1b[0m \x1b[37m%s:%d\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m \x1b[32mtest message\x1b[0m \x1b[90mfoo=\x1b[0mbar\n", file, line)
+	expected := fmt.Sprintf("\x1b[2m[]\x1b[0m \x1b[37m%s:%d\x1b[0m \x1b[42m\x1b[30m INFO \x1b[0m test message \x1b[90mfoo=\x1b[0mbar\n", file, line)
 
 	if !bytes.Equal(w.WrittenData, []byte(expected)) {
 		t.Errorf("\nExpected:\n%s\nGot:\n%s\nExpected:\n%[1]q\nGot:\n%[2]q", expected, w.WrittenData)

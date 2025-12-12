@@ -285,7 +285,7 @@ func (h *developHandler) formatOneLine(b []byte, r *slog.Record) []byte {
 	// Message (only if no newlines - otherwise add to multiline section)
 	messageHasNewlines := strings.Contains(r.Message, "\n")
 	if !messageHasNewlines {
-		b = append(b, h.colorString([]byte(r.Message), c.fg)...)
+		b = append(b, []byte(r.Message)...)
 	}
 
 	// Collect attributes
@@ -338,7 +338,7 @@ func (h *developHandler) formatOneLine(b []byte, r *slog.Record) []byte {
 		// Add message if it has newlines
 		if messageHasNewlines {
 			b = append(b, "  "...)
-			b = append(b, h.colorString([]byte(r.Message), c.fg)...)
+			b = append(b, []byte(r.Message)...)
 			b = append(b, '\n')
 		}
 
@@ -1196,7 +1196,7 @@ func (h *developHandler) colorizeJSONBytes(data []byte, multiline bool, baseInde
 			}
 		case 'n': // null
 			if !inString && i+3 < len(data) && string(data[i:i+4]) == "null" {
-				result = append(result, h.colorString([]byte("null"), fgBlack)...)
+				result = append(result, h.colorString([]byte("null"), fgYellow)...)
 				i += 3
 			} else if inString {
 				if inKey {
