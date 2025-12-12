@@ -1,4 +1,4 @@
-# 🧻 humanslog - Go [slog.Handler](https://pkg.go.dev/log/slog#Handler) for development
+# 🤗 humanslog - Go [slog.Handler](https://pkg.go.dev/log/slog#Handler) for humans
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/roblaszczak/humanslog/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/roblaszczak/humanslog)](https://goreportcard.com/report/github.com/roblaszczak/humanslog)
@@ -9,9 +9,14 @@
 This is an updated version of [github.com/golang-cz/devslog](https://github.com/golang-cz/devslog) that keeps the colorful formatting and structure but writes most of the log output in a **single line** for better readability. Multiline strings are preserved for readability, and JSON values are automatically formatted inline with syntax highlighting.
 I also adjusted color choices to be more suitable for single-line output and closer to my personal taste.
 
+## Example output
+
+![Example output](docs/screenshot.png)
+
 ## Features
 
-- Single-line log format (except for multiline strings)
+- Single-line log format
+- Support for multiline strings
 - Inline JSON formatting with syntax highlighting
 - Colorful output with customizable colors
 - Zero dependencies
