@@ -1,27 +1,27 @@
 # 🧻 devslog - Go [slog.Handler](https://pkg.go.dev/log/slog#Handler) for development
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/golang-cz/devslog/blob/master/LICENSE)
-[![Go Report Card](https://goreportcard.com/badge/github.com/golang-cz/devslog)](https://goreportcard.com/report/github.com/golang-cz/devslog)
-[![Go Reference](https://pkg.go.dev/badge/github.com/golang-cz/devslog.svg)](https://pkg.go.dev/github.com/golang-cz/devslog)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/roblaszczak/devslog/blob/master/LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/roblaszczak/devslog)](https://goreportcard.com/report/github.com/roblaszczak/devslog)
+[![Go Reference](https://pkg.go.dev/badge/github.com/roblaszczak/devslog.svg)](https://pkg.go.dev/github.com/roblaszczak/devslog)
 
 `devslog` is a zero dependency structured logging handler for Go's [`log/slog`](https://pkg.go.dev/log/slog) package with pretty and colorful output for developers.
 
-### Devslog output
+This is an updated version of [github.com/golang-cz/devslog](https://github.com/golang-cz/devslog) that keeps the colorful formatting and structure but writes most of the log output in a **single line** for better readability. Multiline strings are preserved for readability, and JSON values are automatically formatted inline with syntax highlighting.
+I also adjusted color choices to be more suitable for single-line output and closer to my personal preferences.
 
-![image](https://github.com/golang-cz/devslog/assets/17728576/cfdc1634-16fe-4dd0-a643-21bf519cd4fe)
+## Features
 
-#### Compared to
-
-`TextHandler`
-![image](https://github.com/golang-cz/devslog/assets/17728576/49aab1c0-93ba-409d-8637-a96eeeaaf0e1)
-
-`JSONHandler`
-![image](https://github.com/golang-cz/devslog/assets/17728576/775af693-2f96-47e8-9190-5ead77b41a27)
+- Single-line log format (except for multiline strings)
+- Inline JSON formatting with syntax highlighting
+- Colorful output with customizable colors
+- Zero dependencies
+- Stack trace support for errors
+- Logfmt-like output
 
 ## Install
 
 ```
-go get github.com/golang-cz/devslog@latest
+go get github.com/roblaszczak/devslog@latest
 ```
 
 ## Examples
@@ -124,3 +124,9 @@ slog.SetDefault(logger)
 | StringerFormatter   | Use Stringer interface for formatting                          | false          | bool                 |
 | NoColor             | Disable coloring                                               | false          | bool                 |
 | SameSourceInfoColor | Keep same color for whole source info                          | false          | bool                 |
+
+## Credits
+
+This project is based on [github.com/golang-cz/devslog](https://github.com/golang-cz/devslog) created by the golang-cz community. Special thanks to all the contributors of the original project for building an excellent foundation for structured logging in Go.
+
+The original project provided the colorful output, configuration options, and overall architecture that made this single-line variant possible.

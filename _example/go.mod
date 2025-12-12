@@ -2,6 +2,6 @@ module testslog
 
 go 1.21.0
 
-replace github.com/golang-cz/devslog => ../
+require github.com/roblaszczak/devslog v0.0.0-00010101000000-000000000000
 
-require github.com/golang-cz/devslog v0.0.9-0.20231205161544-41c70164951c
+replace github.com/roblaszczak/devslog => ../

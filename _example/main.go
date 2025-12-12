@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/golang-cz/devslog"
+	"github.com/roblaszczak/devslog"
 )
 
 func main() {
@@ -51,6 +51,7 @@ func main() {
 	logSmall(false)
 	printInfiniteLoop(false)
 	printNoColor(false)
+	jsonExample(true)
 }
 
 const (
@@ -402,5 +403,21 @@ func printNoColor(log bool) {
 	l.Info("msg",
 		slog.String("string", "str"),
 		slog.Any("map", map[int]string{3: "three", 4: "four"}),
+	)
+}
+
+func jsonExample(log bool) {
+	if !log {
+		return
+	}
+
+	// JSON strings are automatically detected and colorized
+	jsonData := `{"name": "Alice", "age": 30, "email": "alice@example.com", "active": true}`
+	nestedJSON := `{"user": {"id": 123, "name": "Bob", "roles": ["admin", "user"]}, "timestamp": "2024-01-01T12:00:00Z"}`
+
+	slog.Info("JSON formatting example",
+		slog.String("user_data", jsonData),
+		slog.String("metadata", nestedJSON),
+		slog.String("normal", "Regular string - not JSON"),
 	)
 }

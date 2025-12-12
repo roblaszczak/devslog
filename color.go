@@ -21,6 +21,7 @@ var (
 	fgMagenta foregroundColor = []byte("\x1b[35m")
 	fgCyan    foregroundColor = []byte("\x1b[36m")
 	fgWhite   foregroundColor = []byte("\x1b[37m")
+	fgGray    foregroundColor = []byte("\x1b[90m")
 
 	// Background colors
 	bgBlack   backgroundColor = []byte("\x1b[40m")

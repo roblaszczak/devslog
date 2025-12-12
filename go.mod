@@ -1,3 +1,3 @@
-module github.com/golang-cz/devslog
+module github.com/roblaszczak/devslog
 
 go 1.21.0
